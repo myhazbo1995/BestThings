@@ -1,5 +1,6 @@
 using Factory.Concrete;
 using Factory.Interfaces;
+using Factory.Static;
 using Xunit;
 
 namespace Test
@@ -11,7 +12,7 @@ namespace Test
         [InlineData("MoneyBack")]
         [InlineData("Titanium")]
         [InlineData("Platinum")]
-        public void Test(string cardType)
+        public void Test1(string cardType)
         {
             ICreditCard cardDetails = cardType switch
             {
@@ -22,6 +23,24 @@ namespace Test
                 "Platinum" => new Platinum(),
                 _ => null
             };
+            
+            if (string.IsNullOrEmpty(cardType))
+                Assert.True(cardDetails is null);
+            else
+            {
+                Assert.False(cardDetails is null);
+                Assert.Contains(cardType.ToLower(), cardDetails.GetCardType().ToLower());
+            }   
+        }
+        
+        [Theory]
+        [InlineData(null)]
+        [InlineData("MoneyBack")]
+        [InlineData("Titanium")]
+        [InlineData("Platinum")]
+        public void Test2(string cardType)
+        {
+            var cardDetails = CreditCardFactory.GetCreditCard(cardType);
             
             if (string.IsNullOrEmpty(cardType))
                 Assert.True(cardDetails is null);
