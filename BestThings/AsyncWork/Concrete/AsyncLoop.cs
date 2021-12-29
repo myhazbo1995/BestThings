@@ -15,13 +15,13 @@ namespace AsyncWork.Concrete
     public class AsyncLoop : IAsyncLoop
     {
         /// <summary>Instance logger.</summary>
-        private readonly ILogger logger;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Application defined task that will be called and awaited in the async loop.
         /// The task is given a cancellation token that allows it to recognize that the caller wishes to cancel it.
         /// </summary>
-        private readonly Func<CancellationToken, Task> loopAsync;
+        private readonly Func<CancellationToken, Task> _loopAsync;
 
         /// <inheritdoc />
         public string Name { get; }
@@ -52,8 +52,8 @@ namespace AsyncWork.Concrete
             Guard.NotNull(loop, nameof(loop));
 
             this.Name = name;
-            this.logger = logger;
-            this.loopAsync = loop;
+            this._logger = logger;
+            this._loopAsync = loop;
             this.RepeatEvery = TimeSpan.FromMilliseconds(1000);
         }
 
@@ -89,25 +89,25 @@ namespace AsyncWork.Concrete
                 {
                     if (delayStart != null)
                     {
-                        this.logger.LogInformation("{0} starting in {1} seconds.", this.Name, delayStart.Value.TotalSeconds);
+                        this._logger.LogInformation("{0} starting in {1} seconds.", this.Name, delayStart.Value.TotalSeconds);
                         await Task.Delay(delayStart.Value, cancellation).ConfigureAwait(false);
                     }
 
-                    this.logger.LogInformation("{0} starting.", this.Name);
+                    this._logger.LogInformation("{0} starting.", this.Name);
 
                     if (this.RepeatEvery == TimeSpans.RunOnce)
                     {
                         if (cancellation.IsCancellationRequested)
                             return;
 
-                        await this.loopAsync(cancellation).ConfigureAwait(false);
+                        await this._loopAsync(cancellation).ConfigureAwait(false);
 
                         return;
                     }
 
                     while (!cancellation.IsCancellationRequested)
                     {
-                        await this.loopAsync(cancellation).ConfigureAwait(false);
+                        await this._loopAsync(cancellation).ConfigureAwait(false);
                         if (!cancellation.IsCancellationRequested)
                             await Task.Delay(this.RepeatEvery, cancellation).ConfigureAwait(false);
                     }
@@ -123,17 +123,17 @@ namespace AsyncWork.Concrete
                 }
                 finally
                 {
-                    this.logger.LogInformation(this.Name + " stopping.");
+                    this._logger.LogInformation(this.Name + " stopping.");
                 }
 
                 if (this.UncaughtException != null)
                 {
                     // WARNING: Do NOT touch this line unless you want to fix weird AsyncLoop tests.
                     // The following line has to be called EXACTLY as it is.
-                    this.logger.LogCritical(new EventId(0), this.UncaughtException, this.Name + " threw an unhandled exception");
+                    this._logger.LogCritical(new EventId(0), this.UncaughtException, this.Name + " threw an unhandled exception");
 
                     // You can touch this one.
-                    this.logger.LogError("{0} threw an unhandled exception: {1}", this.Name, this.UncaughtException.ToString());
+                    this._logger.LogError("{0} threw an unhandled exception: {1}", this.Name, this.UncaughtException.ToString());
                 }
             }, cancellation);
         }
@@ -147,12 +147,12 @@ namespace AsyncWork.Concrete
             {
                 try
                 {
-                    this.logger.LogInformation("Waiting for {0} to finish or be cancelled.", this.Name);
+                    this._logger.LogInformation("Waiting for {0} to finish or be cancelled.", this.Name);
                     this.RunningTask.Wait();
                 }
                 catch (TaskCanceledException)
                 {
-                    this.logger.LogInformation("{0} cancelled.", this.Name);
+                    this._logger.LogInformation("{0} cancelled.", this.Name);
                 }
             }
         }

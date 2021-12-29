@@ -40,11 +40,11 @@ namespace AsyncWork.Utilities
     /// </summary>
     public class NodeLifetime : INodeLifetime
     {
-        private readonly CancellationTokenSource startedSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _startedSource = new CancellationTokenSource();
 
-        private readonly CancellationTokenSource stoppingSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _stoppingSource = new CancellationTokenSource();
 
-        private readonly CancellationTokenSource stoppedSource = new CancellationTokenSource();
+        private readonly CancellationTokenSource _stoppedSource = new CancellationTokenSource();
 
         /// <summary>
         /// Triggered when the application host has fully started and is about to wait
@@ -54,7 +54,7 @@ namespace AsyncWork.Utilities
         {
             get
             {
-                return this.startedSource.Token;
+                return this._startedSource.Token;
             }
         }
 
@@ -66,7 +66,7 @@ namespace AsyncWork.Utilities
         {
             get
             {
-                return this.stoppingSource.Token;
+                return this._stoppingSource.Token;
             }
         }
 
@@ -79,7 +79,7 @@ namespace AsyncWork.Utilities
         {
             get
             {
-                return this.stoppedSource.Token;
+                return this._stoppedSource.Token;
             }
         }
 
@@ -88,14 +88,14 @@ namespace AsyncWork.Utilities
         /// </summary>
         public void StopApplication()
         {
-            CancellationTokenSource stoppingSource = this.stoppingSource;
+            CancellationTokenSource stoppingSource = this._stoppingSource;
             bool lockTaken = false;
             try
             {
                 Monitor.Enter((object)stoppingSource, ref lockTaken);
                 try
                 {
-                    this.stoppingSource.Cancel(false);
+                    this._stoppingSource.Cancel(false);
                 }
                 catch (Exception)
                 {
@@ -115,7 +115,7 @@ namespace AsyncWork.Utilities
         {
             try
             {
-                this.startedSource.Cancel(false);
+                this._startedSource.Cancel(false);
             }
             catch (Exception)
             {
@@ -129,7 +129,7 @@ namespace AsyncWork.Utilities
         {
             try
             {
-                this.stoppedSource.Cancel(false);
+                this._stoppedSource.Cancel(false);
             }
             catch (Exception)
             {

@@ -10,28 +10,28 @@ namespace AsyncWork.Concrete
     /// </summary>
     public partial class AsyncProvider : IAsyncProvider
     {
-        private const int DefaultLoopRepeatInterval = 1000;
+        private const int _defaultLoopRepeatInterval = 1000;
 
-        private object lockAsyncDelegates;
-        private object lockRegisteredTasks;
+        private readonly object _lockAsyncDelegates;
+        private readonly object _lockRegisteredTasks;
 
         /// <summary>
         /// Holds a list of currently running async delegates or delegates that stopped because of unhandled exceptions.
-        /// Protected by <see cref="lockAsyncDelegates"/> lock
+        /// Protected by <see cref="_lockAsyncDelegates"/> lock
         /// </summary>
-        private Dictionary<IAsyncDelegate, AsyncTaskInfo> asyncDelegates;
+        private readonly Dictionary<IAsyncDelegate, AsyncTaskInfo> _asyncDelegates;
 
         /// <summary>
         /// Holds a list of currently registered tasks with their health status.
-        /// Protected by <see cref="lockRegisteredTasks"/> lock
+        /// Protected by <see cref="_lockRegisteredTasks"/> lock
         /// </summary>
-        private Dictionary<Task, AsyncTaskInfo> registeredTasks;
+        private readonly Dictionary<Task, AsyncTaskInfo> _registeredTasks;
 
-        private ILoggerFactory loggerFactory;
-        private ILogger logger;
-        private readonly INodeLifetime nodeLifetime;
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger _logger;
+        private readonly INodeLifetime _nodeLifetime;
 
-        private (string Name, int Width)[] benchmarkColumnsDefinition = new[]
+        private readonly (string Name, int Width)[] _benchmarkColumnsDefinition = new[]
         {
             (Name: "Name", Width: 80),
             (Name: "Type", Width: 15),
@@ -41,16 +41,16 @@ namespace AsyncWork.Concrete
 
         public AsyncProvider(ILoggerFactory loggerFactory, INodeLifetime nodeLifetime)
         {
-            this.lockAsyncDelegates = new object();
-            this.lockRegisteredTasks = new object();
+            this._lockAsyncDelegates = new object();
+            this._lockRegisteredTasks = new object();
 
-            this.asyncDelegates = new Dictionary<IAsyncDelegate, AsyncTaskInfo>();
-            this.registeredTasks = new Dictionary<Task, AsyncTaskInfo>();
+            this._asyncDelegates = new Dictionary<IAsyncDelegate, AsyncTaskInfo>();
+            this._registeredTasks = new Dictionary<Task, AsyncTaskInfo>();
 
-            this.loggerFactory = Guard.NotNull(loggerFactory, nameof(loggerFactory));
-            this.logger = this.loggerFactory.CreateLogger(this.GetType().FullName);
+            this._loggerFactory = Guard.NotNull(loggerFactory, nameof(loggerFactory));
+            this._logger = this._loggerFactory.CreateLogger(this.GetType().FullName);
 
-            this.nodeLifetime = Guard.NotNull(nodeLifetime, nameof(nodeLifetime));
+            this._nodeLifetime = Guard.NotNull(nodeLifetime, nameof(nodeLifetime));
         }
 
         /// <inheritdoc />
@@ -58,11 +58,11 @@ namespace AsyncWork.Concrete
         {
             AsyncQueue<T> newDelegate;
 
-            lock (this.lockAsyncDelegates)
+            lock (this._lockAsyncDelegates)
             {
                 newDelegate = new AsyncQueue<T>(new AsyncQueue<T>.OnEnqueueAsync(@delegate));
 
-                this.asyncDelegates.Add(newDelegate, new AsyncTaskInfo(friendlyName, AsyncTaskInfo.AsyncTaskType.Dequeuer));
+                this._asyncDelegates.Add(newDelegate, new AsyncTaskInfo(friendlyName, AsyncTaskInfo.AsyncTaskType.Dequeuer));
             }
 
             // task will continue with onAsyncDelegateUnhandledException if @delegate had unhandled exceptions
@@ -94,15 +94,15 @@ namespace AsyncWork.Concrete
             Guard.NotNull(cancellation, nameof(cancellation));
 
             // instantiate the loop
-            IAsyncLoop loopInstance = new AsyncLoop(name, this.logger, loop);
+            IAsyncLoop loopInstance = new AsyncLoop(name, this._logger, loop);
 
             Task loopTask;
-            lock (this.asyncDelegates)
+            lock (this._asyncDelegates)
             {
-                this.asyncDelegates.Add(loopInstance, new AsyncTaskInfo(name, AsyncTaskInfo.AsyncTaskType.Loop));
+                this._asyncDelegates.Add(loopInstance, new AsyncTaskInfo(name, AsyncTaskInfo.AsyncTaskType.Loop));
             }
 
-            loopTask = loopInstance.Run(cancellation, repeatEvery ?? TimeSpan.FromMilliseconds(DefaultLoopRepeatInterval), startAfter).RunningTask;
+            loopTask = loopInstance.Run(cancellation, repeatEvery ?? TimeSpan.FromMilliseconds(_defaultLoopRepeatInterval), startAfter).RunningTask;
 
             // task will continue with onAsyncDelegateUnhandledException if @delegate had unhandled exceptions
             loopTask.ContinueWith(
@@ -167,9 +167,9 @@ namespace AsyncWork.Concrete
 
             // instantiate the loop
 
-            lock (this.lockRegisteredTasks)
+            lock (this._lockRegisteredTasks)
             {
-                this.registeredTasks.Add(taskToRegister, new AsyncTaskInfo(name, AsyncTaskInfo.AsyncTaskType.RegisteredTask));
+                this._registeredTasks.Add(taskToRegister, new AsyncTaskInfo(name, AsyncTaskInfo.AsyncTaskType.RegisteredTask));
             }
 
             // task will continue with OnRegisteredTaskUnhandledException if @delegate had unhandled exceptions
@@ -194,9 +194,9 @@ namespace AsyncWork.Concrete
         /// <inheritdoc />
         public bool IsAsyncDelegateDequeuerRunning(IAsyncDelegate asyncDelegate)
         {
-            lock (this.lockAsyncDelegates)
+            lock (this._lockAsyncDelegates)
             {
-                if (this.asyncDelegates.TryGetValue(asyncDelegate, out AsyncTaskInfo delegateInfo))
+                if (this._asyncDelegates.TryGetValue(asyncDelegate, out AsyncTaskInfo delegateInfo))
                 {
                     // task in the dictionaries are either running or faulted so we just look for an asyncDelegate with a not faulted status.
                     return delegateInfo.Status != TaskStatus.Faulted;
@@ -209,30 +209,30 @@ namespace AsyncWork.Concrete
         /// <inheritdoc />
         public bool IsAsyncDelegateDequeuerRunning(string name)
         {
-            lock (this.lockAsyncDelegates)
+            lock (this._lockAsyncDelegates)
             {
                 // task in the dictionaries are either running or faulted so we just look for an IAsyncDelegate with the given name and status not faulted.
-                return this.asyncDelegates.Values.Any(@delegate => @delegate.FriendlyName == name && @delegate.Status != TaskStatus.Faulted && @delegate.Type == AsyncTaskInfo.AsyncTaskType.Dequeuer);
+                return this._asyncDelegates.Values.Any(@delegate => @delegate.FriendlyName == name && @delegate.Status != TaskStatus.Faulted && @delegate.Type == AsyncTaskInfo.AsyncTaskType.Dequeuer);
             }
         }
 
         /// <inheritdoc />
         public bool IsAsyncLoopRunning(string name)
         {
-            lock (this.lockAsyncDelegates)
+            lock (this._lockAsyncDelegates)
             {
                 // task in the dictionaries are either running or faulted so we just look for a dequeuer with the given name and status not faulted.
-                return this.asyncDelegates.Values.Any(@delegate => @delegate.FriendlyName == name && @delegate.Status != TaskStatus.Faulted && @delegate.Type == AsyncTaskInfo.AsyncTaskType.Loop);
+                return this._asyncDelegates.Values.Any(@delegate => @delegate.FriendlyName == name && @delegate.Status != TaskStatus.Faulted && @delegate.Type == AsyncTaskInfo.AsyncTaskType.Loop);
             }
         }
 
         /// <inheritdoc />
         public bool IsRegisteredTaskRunning(string name)
         {
-            lock (this.lockRegisteredTasks)
+            lock (this._lockRegisteredTasks)
             {
                 // task in the dictionaries are either running or faulted so we just look for a registered task with the given name and status not faulted.
-                return this.registeredTasks.Values.Any(@delegate => @delegate.FriendlyName == name && @delegate.Status != TaskStatus.Faulted && @delegate.Type == AsyncTaskInfo.AsyncTaskType.RegisteredTask);
+                return this._registeredTasks.Values.Any(@delegate => @delegate.FriendlyName == name && @delegate.Status != TaskStatus.Faulted && @delegate.Type == AsyncTaskInfo.AsyncTaskType.RegisteredTask);
             }
         }
 
@@ -240,14 +240,14 @@ namespace AsyncWork.Concrete
         public string GetStatistics(bool faultyOnly)
         {
             var taskInformations = new List<AsyncTaskInfo>();
-            lock (this.lockAsyncDelegates)
+            lock (this._lockAsyncDelegates)
             {
-                taskInformations.AddRange(this.asyncDelegates.Values);
+                taskInformations.AddRange(this._asyncDelegates.Values);
             }
 
-            lock (this.lockRegisteredTasks)
+            lock (this._lockRegisteredTasks)
             {
-                taskInformations.AddRange(this.registeredTasks.Values);
+                taskInformations.AddRange(this._registeredTasks.Values);
             }
 
             int running = taskInformations.Where(info => info.IsRunning).Count();
@@ -274,13 +274,13 @@ namespace AsyncWork.Concrete
                     Exception = info.Exception?.Message
                 };
 
-            foreach (var item in this.benchmarkColumnsDefinition)
+            foreach (var item in this._benchmarkColumnsDefinition)
             {
                 sb.Append(item.Name.PadRight(item.Width));
             }
 
             sb.AppendLine();
-            sb.AppendLine("-".PadRight(this.benchmarkColumnsDefinition.Sum(column => column.Width), '-'));
+            sb.AppendLine("-".PadRight(this._benchmarkColumnsDefinition.Sum(column => column.Width), '-'));
 
             foreach (var row in data)
             {
@@ -288,9 +288,9 @@ namespace AsyncWork.Concrete
                 if (faultyOnly && row.Exception == null)
                     continue;
 
-                for (int iColumn = 0; iColumn < this.benchmarkColumnsDefinition.Length; iColumn++)
+                for (int iColumn = 0; iColumn < this._benchmarkColumnsDefinition.Length; iColumn++)
                 {
-                    sb.Append(row.Columns[iColumn].PadRight(this.benchmarkColumnsDefinition[iColumn].Width));
+                    sb.Append(row.Columns[iColumn].PadRight(this._benchmarkColumnsDefinition[iColumn].Width));
                 }
 
                 // if exception != null means the loop is faulted, so I show the reason in a row under it, a little indented.
@@ -303,7 +303,7 @@ namespace AsyncWork.Concrete
                 sb.AppendLine();
             }
 
-            sb.AppendLine("-".PadRight(this.benchmarkColumnsDefinition.Sum(column => column.Width), '-'));
+            sb.AppendLine("-".PadRight(this._benchmarkColumnsDefinition.Sum(column => column.Width), '-'));
 
             return sb.ToString();
         }
@@ -313,14 +313,14 @@ namespace AsyncWork.Concrete
         {
             var taskInformation = new List<AsyncTaskInfo>();
 
-            lock (this.lockAsyncDelegates)
+            lock (this._lockAsyncDelegates)
             {
-                taskInformation.AddRange(this.asyncDelegates.Values);
+                taskInformation.AddRange(this._asyncDelegates.Values);
             }
 
-            lock (this.lockRegisteredTasks)
+            lock (this._lockRegisteredTasks)
             {
-                taskInformation.AddRange(this.registeredTasks.Values);
+                taskInformation.AddRange(this._registeredTasks.Values);
             }
 
             List<(string, TaskStatus)> runningTasks = taskInformation.Select(a => (a.FriendlyName, a.Status)).OrderBy(a => a.Item1).ToList();
@@ -331,22 +331,22 @@ namespace AsyncWork.Concrete
         private void OnRegisteredTaskCompleted(Task task)
         {
             AsyncTaskInfo itemToRemove;
-            lock (this.lockRegisteredTasks)
+            lock (this._lockRegisteredTasks)
             {
-                if (this.registeredTasks.TryGetValue(task, out itemToRemove))
+                if (this._registeredTasks.TryGetValue(task, out itemToRemove))
                 {
-                    this.registeredTasks.Remove(task);
+                    this._registeredTasks.Remove(task);
                 }
             }
 
             if (itemToRemove != null)
             {
-                this.logger.LogDebug("Registered task '{0}' Removed. Id: {1}.", itemToRemove.FriendlyName, task.Id);
+                this._logger.LogDebug("Registered task '{0}' Removed. Id: {1}.", itemToRemove.FriendlyName, task.Id);
             }
             else
             {
                 // Should never happen.
-                this.logger.LogError("Cannot find the registered task with Id {0}.", task.Id);
+                this._logger.LogError("Cannot find the registered task with Id {0}.", task.Id);
             }
         }
 
@@ -357,9 +357,9 @@ namespace AsyncWork.Concrete
         private void OnRegisteredTaskUnhandledException(Task task)
         {
             AsyncTaskInfo delegateInfo;
-            lock (this.lockRegisteredTasks)
+            lock (this._lockRegisteredTasks)
             {
-                if (this.registeredTasks.TryGetValue(task, out delegateInfo))
+                if (this._registeredTasks.TryGetValue(task, out delegateInfo))
                 {
                     // casted to IAsyncTaskInfoSetter to be able to set properties
                     IAsyncTaskInfoSetter infoSetter = delegateInfo;
@@ -370,11 +370,11 @@ namespace AsyncWork.Concrete
                 else
                 {
                     // Should never happen.
-                    this.logger.LogError("Cannot find the registered task with Id {0}.", task.Id);
+                    this._logger.LogError("Cannot find the registered task with Id {0}.", task.Id);
                     return;
                 }
 
-                this.logger.LogError(task.Exception.GetBaseException(), "Unhandled exception for registered task {0}.", delegateInfo.FriendlyName);
+                this._logger.LogError(task.Exception.GetBaseException(), "Unhandled exception for registered task {0}.", delegateInfo.FriendlyName);
             }
         }
 
@@ -387,9 +387,9 @@ namespace AsyncWork.Concrete
         private void OnAsyncDelegateUnhandledException(Task task, object state)
         {
             AsyncTaskInfo delegateInfo;
-            lock (this.lockAsyncDelegates)
+            lock (this._lockAsyncDelegates)
             {
-                if (this.asyncDelegates.TryGetValue((IAsyncDelegate)state, out delegateInfo))
+                if (this._asyncDelegates.TryGetValue((IAsyncDelegate)state, out delegateInfo))
                 {
                     // casted to IAsyncTaskInfoSetter to be able to set properties
                     IAsyncTaskInfoSetter infoSetter = delegateInfo;
@@ -400,11 +400,11 @@ namespace AsyncWork.Concrete
                 else
                 {
                     // Should never happen.
-                    this.logger.LogError("Cannot find the AsyncDelegateInfo related to the faulted task with Id {0}.", task.Id);
+                    this._logger.LogError("Cannot find the AsyncDelegateInfo related to the faulted task with Id {0}.", task.Id);
                     return;
                 }
 
-                this.logger.LogError(task.Exception.GetBaseException(), "Unhandled exception for async delegate worker {0}.", delegateInfo.FriendlyName);
+                this._logger.LogError(task.Exception.GetBaseException(), "Unhandled exception for async delegate worker {0}.", delegateInfo.FriendlyName);
             }
         }
 
@@ -417,9 +417,9 @@ namespace AsyncWork.Concrete
         private void OnAsyncDelegateCompleted(Task task, object state)
         {
             AsyncTaskInfo itemToRemove;
-            lock (this.lockAsyncDelegates)
+            lock (this._lockAsyncDelegates)
             {
-                if (this.asyncDelegates.TryGetValue((IAsyncDelegate)state, out itemToRemove))
+                if (this._asyncDelegates.TryGetValue((IAsyncDelegate)state, out itemToRemove))
                 {
                     // When AsyncLoop fails with an uncaughtException, it handle it completing fine.
                     // I want instead to keep its failed status visible on console so I handle this scenario as faulted task.
@@ -432,24 +432,24 @@ namespace AsyncWork.Concrete
                         infoSetter.Exception = asyncLoop.UncaughtException;
                         infoSetter.Status = TaskStatus.Faulted;
 
-                        this.logger.LogError("Async Loop '{0}' completed with an UncaughtException, marking it as faulted. Task Id: {1}.", itemToRemove.FriendlyName, task.Id);
+                        this._logger.LogError("Async Loop '{0}' completed with an UncaughtException, marking it as faulted. Task Id: {1}.", itemToRemove.FriendlyName, task.Id);
                         return;
                     }
                     else
                     {
-                        this.asyncDelegates.Remove((IAsyncDelegate)state);
+                        this._asyncDelegates.Remove((IAsyncDelegate)state);
                     }
                 }
             }
 
             if (itemToRemove != null)
             {
-                this.logger.LogDebug("IAsyncDelegate task '{0}' Removed. Id: {1}.", itemToRemove.FriendlyName, task.Id);
+                this._logger.LogDebug("IAsyncDelegate task '{0}' Removed. Id: {1}.", itemToRemove.FriendlyName, task.Id);
             }
             else
             {
                 // Should never happen.
-                this.logger.LogError("Cannot find the IAsyncDelegate task with Id {0}.", task.Id);
+                this._logger.LogError("Cannot find the IAsyncDelegate task with Id {0}.", task.Id);
             }
         }
     }

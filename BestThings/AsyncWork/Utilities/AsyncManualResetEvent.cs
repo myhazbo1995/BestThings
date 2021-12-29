@@ -6,15 +6,15 @@
     public sealed class AsyncManualResetEvent
     {
         /// <summary>
-        /// Lock to protect access to <see cref="tcs"/>.
+        /// Lock to protect access to <see cref="_tcs"/>.
         /// </summary>
-        private readonly object mutex;
+        private readonly object _mutex;
 
         /// <summary>
         /// The current state of the event.
         /// </summary>
-        /// <remarks>All access to this object has to be protected by <see cref="mutex"/>.</remarks>
-        private TaskCompletionSource<object> tcs;
+        /// <remarks>All access to this object has to be protected by <see cref="_mutex"/>.</remarks>
+        private TaskCompletionSource<object> _tcs;
 
         /// <summary>
         /// Creates an async-compatible manual-reset event.
@@ -22,10 +22,10 @@
         /// <param name="set">Whether the manual-reset event is initially set or unset.</param>
         public AsyncManualResetEvent(bool set)
         {
-            this.mutex = new object();
-            this.tcs = this.CreateAsyncTaskSource<object>();
+            this._mutex = new object();
+            this._tcs = this.CreateAsyncTaskSource<object>();
             if (set)
-                this.tcs.TrySetResult(null);
+                this._tcs.TrySetResult(null);
         }
 
         /// <summary>
@@ -43,9 +43,9 @@
         {
             get
             {
-                lock (this.mutex)
+                lock (this._mutex)
                 {
-                    return this.tcs.Task.IsCompleted;
+                    return this._tcs.Task.IsCompleted;
                 }
             }
         }
@@ -55,9 +55,9 @@
         /// </summary>
         public Task WaitAsync()
         {
-            lock (this.mutex)
+            lock (this._mutex)
             {
-                return this.tcs.Task;
+                return this._tcs.Task;
             }
         }
 
@@ -91,9 +91,9 @@
         /// </summary>
         public void Set()
         {
-            lock (this.mutex)
+            lock (this._mutex)
             {
-                this.tcs.TrySetResult(null);
+                this._tcs.TrySetResult(null);
             }
         }
 
@@ -102,10 +102,10 @@
         /// </summary>
         public void Reset()
         {
-            lock (this.mutex)
+            lock (this._mutex)
             {
-                if (this.tcs.Task.IsCompleted)
-                    this.tcs = this.CreateAsyncTaskSource<object>();
+                if (this._tcs.Task.IsCompleted)
+                    this._tcs = this.CreateAsyncTaskSource<object>();
             }
         }
 
