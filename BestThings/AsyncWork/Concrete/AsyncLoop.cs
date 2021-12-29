@@ -1,6 +1,6 @@
 ﻿using AsyncWork.Abstract;
-using AsyncWork.Utilities;
 using Microsoft.Extensions.Logging;
+using Utilities;
 
 namespace AsyncWork.Concrete
 {

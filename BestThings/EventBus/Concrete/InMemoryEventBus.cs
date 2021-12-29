@@ -1,6 +1,6 @@
 ﻿
 using EventBus.Abstract;
-using EventBus.Utilities;
+using Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace EventBus.Concrete

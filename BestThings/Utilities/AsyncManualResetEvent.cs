@@ -1,4 +1,4 @@
-﻿namespace AsyncWork.Utilities
+﻿namespace Utilities
 {
     /// <summary>
     /// An async-compatible manual-reset event.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsyncWork.Utilities
+namespace Utilities
 {
     /// <summary>
     /// Commonly used time spans.

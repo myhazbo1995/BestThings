@@ -1,4 +1,4 @@
-﻿namespace AsyncWork.Utilities
+﻿namespace Utilities
 {
     /// <summary>
     /// Collection of guard methods.

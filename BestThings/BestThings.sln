@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Factory\Test\Test.c
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AsyncWork", "AsyncWork", "{27B9B16E-2E6A-40B2-85C8-CC32D215E4FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncWork", "AsyncWork\AsyncWork.csproj", "{B846C661-554D-4074-AE64-BFF4FAEC2F0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncWork", "AsyncWork\AsyncWork.csproj", "{B846C661-554D-4074-AE64-BFF4FAEC2F0E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4DB3AC1F-92A9-415C-A2A5-CB5F0317CBF0}"
 	ProjectSection(SolutionItems) = preProject
@@ -40,7 +40,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{EED90913-BF5B-4C93-9AAE-E9F3F11D95F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus", "EventBus\EventBus.csproj", "{0E089B27-D18B-4C9A-8289-7126B6620553}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "EventBus\EventBus.csproj", "{0E089B27-D18B-4C9A-8289-7126B6620553}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{FA964EDC-3586-4595-8AC1-8DF25D078B19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +88,10 @@ Global
 		{0E089B27-D18B-4C9A-8289-7126B6620553}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E089B27-D18B-4C9A-8289-7126B6620553}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E089B27-D18B-4C9A-8289-7126B6620553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +108,7 @@ Global
 		{2B2BDEBB-A450-4D5E-8B7C-16E806AB053B} = {31468D44-5835-4F26-B946-25CE9678C248}
 		{B846C661-554D-4074-AE64-BFF4FAEC2F0E} = {27B9B16E-2E6A-40B2-85C8-CC32D215E4FB}
 		{0E089B27-D18B-4C9A-8289-7126B6620553} = {EED90913-BF5B-4C93-9AAE-E9F3F11D95F7}
+		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE} = {FA964EDC-3586-4595-8AC1-8DF25D078B19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEF2BF02-445D-472C-974F-71E483AE1FA3}

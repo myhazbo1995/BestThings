@@ -1,5 +1,5 @@
 ﻿using AsyncWork.Abstract;
-using AsyncWork.Utilities;
+using Utilities;
 using Microsoft.Extensions.Logging;
 using System.Text;
 
