@@ -12,17 +12,17 @@ namespace EventBus.Concrete
         /// <summary>
         /// The logger
         /// </summary>
-        private readonly ILogger logger;
+        private readonly ILogger _logger;
 
         public DefaultSubscriptionErrorHandler(ILoggerFactory loggerFactory)
         {
-            this.logger = loggerFactory.CreateLogger(this.GetType().FullName);
+            this._logger = loggerFactory.CreateLogger(this.GetType().FullName);
         }
 
         /// <inheritdoc />
         public void Handle(EventBase @event, Exception exception, ISubscription subscription)
         {
-            this.logger.LogError(exception, "Error handling the event {0}", @event.GetType().Name);
+            this._logger.LogError(exception, "Error handling the event {0}", @event.GetType().Name);
             throw exception;
         }
     }

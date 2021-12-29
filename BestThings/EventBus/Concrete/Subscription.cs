@@ -17,11 +17,11 @@ namespace EventBus.Concrete
         /// <summary>
         /// The action to invoke when a subscripted event type is published.
         /// </summary>
-        private readonly Action<TEventBase> action;
+        private readonly Action<TEventBase> _action;
 
         public Subscription(Action<TEventBase> action, SubscriptionToken token)
         {
-            this.action = action ?? throw new ArgumentNullException(nameof(action));
+            this._action = action ?? throw new ArgumentNullException(nameof(action));
             this.SubscriptionToken = token ?? throw new ArgumentNullException(nameof(token));
         }
 
@@ -30,7 +30,7 @@ namespace EventBus.Concrete
             if (!(eventItem is TEventBase))
                 throw new ArgumentException("Event Item is not the correct type.");
 
-            this.action.Invoke(eventItem as TEventBase);
+            this._action.Invoke(eventItem as TEventBase);
         }
     }
 }

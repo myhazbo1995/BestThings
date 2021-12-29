@@ -8,22 +8,22 @@ namespace EventBus.Concrete
     public class InMemoryEventBus : IEventBus
     {
         /// <summary>Instance logger.</summary>
-        private readonly ILogger logger;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// The subscriber error handler
         /// </summary>
-        private readonly ISubscriptionErrorHandler subscriptionErrorHandler;
+        private readonly ISubscriptionErrorHandler _subscriptionErrorHandler;
 
         /// <summary>
         /// The subscriptions stored by EventType
         /// </summary>
-        private readonly Dictionary<Type, List<ISubscription>> subscriptions;
+        private readonly Dictionary<Type, List<ISubscription>> _subscriptions;
 
         /// <summary>
         /// The subscriptions lock to prevent race condition during publishing
         /// </summary>
-        private readonly object subscriptionsLock = new object();
+        private readonly object _subscriptionsLock = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryEventBus"/> class.
@@ -34,9 +34,9 @@ namespace EventBus.Concrete
         {
             Guard.NotNull(loggerFactory, nameof(loggerFactory));
 
-            this.logger = loggerFactory.CreateLogger(this.GetType().FullName);
-            this.subscriptionErrorHandler = subscriptionErrorHandler ?? new DefaultSubscriptionErrorHandler(loggerFactory);
-            this.subscriptions = new Dictionary<Type, List<ISubscription>>();
+            this._logger = loggerFactory.CreateLogger(this.GetType().FullName);
+            this._subscriptionErrorHandler = subscriptionErrorHandler ?? new DefaultSubscriptionErrorHandler(loggerFactory);
+            this._subscriptions = new Dictionary<Type, List<ISubscription>>();
         }
 
         /// <inheritdoc />
@@ -45,15 +45,15 @@ namespace EventBus.Concrete
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
 
-            lock (this.subscriptionsLock)
+            lock (this._subscriptionsLock)
             {
-                if (!this.subscriptions.ContainsKey(typeof(TEvent)))
+                if (!this._subscriptions.ContainsKey(typeof(TEvent)))
                 {
-                    this.subscriptions.Add(typeof(TEvent), new List<ISubscription>());
+                    this._subscriptions.Add(typeof(TEvent), new List<ISubscription>());
                 }
 
                 var subscriptionToken = new SubscriptionToken(this, typeof(TEvent));
-                this.subscriptions[typeof(TEvent)].Add(new Subscription<TEvent>(handler, subscriptionToken));
+                this._subscriptions[typeof(TEvent)].Add(new Subscription<TEvent>(handler, subscriptionToken));
 
                 return subscriptionToken;
             }
@@ -65,19 +65,19 @@ namespace EventBus.Concrete
             // Ignore null token
             if (subscriptionToken == null)
             {
-                this.logger.LogDebug("Unsubscribe called with a null token, ignored.");
+                this._logger.LogDebug("Unsubscribe called with a null token, ignored.");
                 return;
             }
 
-            lock (this.subscriptionsLock)
+            lock (this._subscriptionsLock)
             {
-                if (this.subscriptions.ContainsKey(subscriptionToken.EventType))
+                if (this._subscriptions.ContainsKey(subscriptionToken.EventType))
                 {
-                    var allSubscriptions = this.subscriptions[subscriptionToken.EventType];
+                    var allSubscriptions = this._subscriptions[subscriptionToken.EventType];
 
                     var subscriptionToRemove = allSubscriptions.FirstOrDefault(sub => sub.SubscriptionToken.Token == subscriptionToken.Token);
                     if (subscriptionToRemove != null)
-                        this.subscriptions[subscriptionToken.EventType].Remove(subscriptionToRemove);
+                        this._subscriptions[subscriptionToken.EventType].Remove(subscriptionToRemove);
                 }
             }
         }
@@ -92,11 +92,11 @@ namespace EventBus.Concrete
 
             List<ISubscription> allSubscriptions = new List<ISubscription>();
 
-            lock (this.subscriptionsLock)
+            lock (this._subscriptionsLock)
             {
-                if (this.subscriptions.ContainsKey(typeof(TEvent)))
+                if (this._subscriptions.ContainsKey(typeof(TEvent)))
                 {
-                    allSubscriptions = this.subscriptions[typeof(TEvent)].ToList();
+                    allSubscriptions = this._subscriptions[typeof(TEvent)].ToList();
                 }
             }
 
@@ -110,7 +110,7 @@ namespace EventBus.Concrete
                 }
                 catch (Exception ex)
                 {
-                    this.subscriptionErrorHandler?.Handle(@event, ex, subscription);
+                    this._subscriptionErrorHandler?.Handle(@event, ex, subscription);
                 }
             }
         }
