@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.1.31911.260
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PollyTutorial", "PollyTutorial", "{7270AD69-F360-4495-B3C0-DA998F531C57}"
 EndProject
@@ -44,7 +44,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "EventBus\EventB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{FA964EDC-3586-4595-8AC1-8DF25D078B19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Utilities\Utilities.csproj", "{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builder", "Builder", "{633E8AC3-44B0-4917-BE62-9DB4DCB0353A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuilderWithInheritance", "Builder\BuilderWithInheritance\BuilderWithInheritance.csproj", "{AFC8A609-194B-4F2E-B950-92CCFFBF2E7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionalBuilder", "Builder\FunctionalBuilder\FunctionalBuilder.csproj", "{95C7AA85-D94F-429D-A23A-82531B3A7B2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuilderParameter", "Builder\BuilderParameter\BuilderParameter.csproj", "{51CFC7DD-CFBA-44A5-B575-6F5A83F1327E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +100,18 @@ Global
 		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFC8A609-194B-4F2E-B950-92CCFFBF2E7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFC8A609-194B-4F2E-B950-92CCFFBF2E7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFC8A609-194B-4F2E-B950-92CCFFBF2E7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFC8A609-194B-4F2E-B950-92CCFFBF2E7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95C7AA85-D94F-429D-A23A-82531B3A7B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95C7AA85-D94F-429D-A23A-82531B3A7B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95C7AA85-D94F-429D-A23A-82531B3A7B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95C7AA85-D94F-429D-A23A-82531B3A7B2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51CFC7DD-CFBA-44A5-B575-6F5A83F1327E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51CFC7DD-CFBA-44A5-B575-6F5A83F1327E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51CFC7DD-CFBA-44A5-B575-6F5A83F1327E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51CFC7DD-CFBA-44A5-B575-6F5A83F1327E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +129,10 @@ Global
 		{B846C661-554D-4074-AE64-BFF4FAEC2F0E} = {27B9B16E-2E6A-40B2-85C8-CC32D215E4FB}
 		{0E089B27-D18B-4C9A-8289-7126B6620553} = {EED90913-BF5B-4C93-9AAE-E9F3F11D95F7}
 		{5ABEA29C-7929-4AAF-B845-D59ABD631EDE} = {FA964EDC-3586-4595-8AC1-8DF25D078B19}
+		{633E8AC3-44B0-4917-BE62-9DB4DCB0353A} = {682CB008-39F4-43D0-9B62-D68ADB5B5428}
+		{AFC8A609-194B-4F2E-B950-92CCFFBF2E7D} = {633E8AC3-44B0-4917-BE62-9DB4DCB0353A}
+		{95C7AA85-D94F-429D-A23A-82531B3A7B2D} = {633E8AC3-44B0-4917-BE62-9DB4DCB0353A}
+		{51CFC7DD-CFBA-44A5-B575-6F5A83F1327E} = {633E8AC3-44B0-4917-BE62-9DB4DCB0353A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEF2BF02-445D-472C-974F-71E483AE1FA3}
