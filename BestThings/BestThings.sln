@@ -78,6 +78,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterWithCaching", "Adapt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterAutofac", "AdapterNoCaching\AdapterAutofac\AdapterAutofac.csproj", "{1B549F31-537E-47EF-90D0-969E433BB1CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterForNumericGenericWithRecursiveGeneric", "AdapterForNumericGenericWithRecursiveGeneric\AdapterForNumericGenericWithRecursiveGeneric.csproj", "{10969F0B-F566-46F1-BE47-01CE075DC2CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,6 +166,10 @@ Global
 		{1B549F31-537E-47EF-90D0-969E433BB1CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B549F31-537E-47EF-90D0-969E433BB1CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B549F31-537E-47EF-90D0-969E433BB1CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10969F0B-F566-46F1-BE47-01CE075DC2CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10969F0B-F566-46F1-BE47-01CE075DC2CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10969F0B-F566-46F1-BE47-01CE075DC2CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10969F0B-F566-46F1-BE47-01CE075DC2CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +203,7 @@ Global
 		{C4E83A60-92EE-499B-9597-559979ACB16C} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
 		{D5FDAFC6-BA06-4770-BF74-3B36119C87EC} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
 		{1B549F31-537E-47EF-90D0-969E433BB1CC} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
+		{10969F0B-F566-46F1-BE47-01CE075DC2CD} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEF2BF02-445D-472C-974F-71E483AE1FA3}
