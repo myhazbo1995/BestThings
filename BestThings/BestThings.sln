@@ -68,13 +68,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multiton", "Multiton\Multit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monostate - do not use", "Monostate - do not use", "{55C1F7D2-D750-47A5-B3E1-5ED29AD6F998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monostate", "Monostate\Monostate.csproj", "{F020DCF6-30EB-4914-BB62-8EED83AD5D13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monostate", "Monostate\Monostate.csproj", "{F020DCF6-30EB-4914-BB62-8EED83AD5D13}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapter", "Adapter", "{B770C449-A62F-48CF-AEDE-B7E1DFB02818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterNoCaching", "AdapterNoCaching\AdapterNoCaching.csproj", "{C4E83A60-92EE-499B-9597-559979ACB16C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterNoCaching", "AdapterNoCaching\AdapterNoCaching.csproj", "{C4E83A60-92EE-499B-9597-559979ACB16C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterWithCaching", "AdapterWithCaching\AdapterWithCaching.csproj", "{D5FDAFC6-BA06-4770-BF74-3B36119C87EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterWithCaching", "AdapterWithCaching\AdapterWithCaching.csproj", "{D5FDAFC6-BA06-4770-BF74-3B36119C87EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterAutofac", "AdapterNoCaching\AdapterAutofac\AdapterAutofac.csproj", "{1B549F31-537E-47EF-90D0-969E433BB1CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -158,6 +160,10 @@ Global
 		{D5FDAFC6-BA06-4770-BF74-3B36119C87EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5FDAFC6-BA06-4770-BF74-3B36119C87EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5FDAFC6-BA06-4770-BF74-3B36119C87EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B549F31-537E-47EF-90D0-969E433BB1CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B549F31-537E-47EF-90D0-969E433BB1CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B549F31-537E-47EF-90D0-969E433BB1CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B549F31-537E-47EF-90D0-969E433BB1CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +196,7 @@ Global
 		{B770C449-A62F-48CF-AEDE-B7E1DFB02818} = {682CB008-39F4-43D0-9B62-D68ADB5B5428}
 		{C4E83A60-92EE-499B-9597-559979ACB16C} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
 		{D5FDAFC6-BA06-4770-BF74-3B36119C87EC} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
+		{1B549F31-537E-47EF-90D0-969E433BB1CC} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEF2BF02-445D-472C-974F-71E483AE1FA3}
