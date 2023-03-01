@@ -76,7 +76,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterNoCaching", "Adapter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterWithCaching", "AdapterWithCaching\AdapterWithCaching.csproj", "{D5FDAFC6-BA06-4770-BF74-3B36119C87EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterAutofac", "AdapterNoCaching\AdapterAutofac\AdapterAutofac.csproj", "{1B549F31-537E-47EF-90D0-969E433BB1CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterAutofac", "AdapterAutofac\AdapterAutofac.csproj", "{1B549F31-537E-47EF-90D0-969E433BB1CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterForNumericGenericWithRecursiveGeneric", "AdapterForNumericGenericWithRecursiveGeneric\AdapterForNumericGenericWithRecursiveGeneric.csproj", "{10969F0B-F566-46F1-BE47-01CE075DC2CD}"
 EndProject
