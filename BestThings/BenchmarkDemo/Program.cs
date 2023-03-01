@@ -14,8 +14,8 @@ namespace BenchmarkDemo
         }
     }
 
-    [SimpleJob(RuntimeMoniker.Net471, baseline:true)]
-    [SimpleJob(RuntimeMoniker.Net50)]
+    //[SimpleJob(RuntimeMoniker.Net471, baseline:true)]
+    //[SimpleJob(RuntimeMoniker.Net50)]
     [MemoryDiagnoser]
     public class Demo
     {
