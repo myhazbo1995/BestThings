@@ -76,9 +76,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterNoCaching", "Adapter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterWithCaching", "AdapterWithCaching\AdapterWithCaching.csproj", "{D5FDAFC6-BA06-4770-BF74-3B36119C87EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterAutofac", "AdapterAutofac\AdapterAutofac.csproj", "{1B549F31-537E-47EF-90D0-969E433BB1CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterAutofac", "AdapterAutofac\AdapterAutofac.csproj", "{1B549F31-537E-47EF-90D0-969E433BB1CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterForNumericGenericWithRecursiveGeneric", "AdapterForNumericGenericWithRecursiveGeneric\AdapterForNumericGenericWithRecursiveGeneric.csproj", "{10969F0B-F566-46F1-BE47-01CE075DC2CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdapterForNumericGenericWithRecursiveGeneric", "AdapterForNumericGenericWithRecursiveGeneric\AdapterForNumericGenericWithRecursiveGeneric.csproj", "{10969F0B-F566-46F1-BE47-01CE075DC2CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bridge", "Bridge", "{113531B5-A9CF-4F51-96B3-D18F23579E18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge", "Bridge\Bridge.csproj", "{A2BB0644-3F73-4646-84B8-EC1B3B12CD5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -170,6 +174,10 @@ Global
 		{10969F0B-F566-46F1-BE47-01CE075DC2CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10969F0B-F566-46F1-BE47-01CE075DC2CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10969F0B-F566-46F1-BE47-01CE075DC2CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2BB0644-3F73-4646-84B8-EC1B3B12CD5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2BB0644-3F73-4646-84B8-EC1B3B12CD5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2BB0644-3F73-4646-84B8-EC1B3B12CD5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2BB0644-3F73-4646-84B8-EC1B3B12CD5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,6 +212,8 @@ Global
 		{D5FDAFC6-BA06-4770-BF74-3B36119C87EC} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
 		{1B549F31-537E-47EF-90D0-969E433BB1CC} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
 		{10969F0B-F566-46F1-BE47-01CE075DC2CD} = {B770C449-A62F-48CF-AEDE-B7E1DFB02818}
+		{113531B5-A9CF-4F51-96B3-D18F23579E18} = {682CB008-39F4-43D0-9B62-D68ADB5B5428}
+		{A2BB0644-3F73-4646-84B8-EC1B3B12CD5E} = {113531B5-A9CF-4F51-96B3-D18F23579E18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BEF2BF02-445D-472C-974F-71E483AE1FA3}
